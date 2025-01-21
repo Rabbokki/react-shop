@@ -4,7 +4,6 @@ function Detail(props){
     let {id} = useParams();
     let imgId = Number(id) + 1;
     let shoes = props.product[id];
-    console.log(shoes.title);
     let strPrice = props.product[id].price.toLocaleString('ko-KR');
 
     return(

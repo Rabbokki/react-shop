@@ -42,9 +42,7 @@ function App() {
         </Container>
       </Navbar>
 
-      <div className='main-bg' onClick={()=>{
-        navigate("/detail");
-      }}></div>
+      <div className='main-bg'></div>
       {/* 라우터 처리 */}
       <Routes>
         <Route path="/" element = {<div>메인 페이지</div>} />
@@ -79,7 +77,7 @@ function App() {
         {product.map((x,index)=>{
           return(
           <Col>
-          <Product product={product} index = {index}></Product>
+          <Product product={product} index = {index} navigate = {navigate}></Product>
           </Col>
           )
         })}
