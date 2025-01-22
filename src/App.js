@@ -12,10 +12,16 @@ import { BrowserRouter, Routes, Route, Link, useNavigate } from "react-router-do
 import Detail from './pages/Detail';
 import AboutPage from './pages/AboutPage';
 import Event from './pages/AboutPage/Event';
+import CartPage from './CartPage';
+import axios from 'axios';
 
 function App() {
   const [product, setProduct] = useState(data);
   let navigate = useNavigate();
+  const threeProduct = [];
+  for(let i=0; i<product.length; i+=3){
+    threeProduct.push(product.slice(i,i+3));
+  }
 
   return (
     <div className="App">
@@ -51,7 +57,11 @@ function App() {
           <div>
             <Detail product = {product}/>
           </div>} />
-        <Route path="/cart" element = {<div>장바구니 페이지</div>} />
+        <Route path="/cart" element = {
+          <div>
+            <CartPage></CartPage>
+          </div>
+          } />
         <Route path="/about" element = {<div><AboutPage/></div>}>
           <Route path='member' element = {<div>직원 소개 페이지</div>}> </Route>
           <Route path='location' element = {<div>길 안내 페이지</div>}> </Route>
@@ -76,17 +86,29 @@ function App() {
       <Row className="justify-content-md-center">
         {product.map((x,index)=>{
           return(
-          <Col>
-          <Product product={product} index = {index} navigate = {navigate}></Product>
+          <Col md={4}>
+            <Product product={product} index = {index} navigate = {navigate}></Product>
           </Col>
           )
         })}
       </Row>
-      <Row>
-        <Col>1 of 3</Col>
-        <Col>2 of 3</Col>
-        <Col>3 of 3</Col>
-      </Row>
+      <button onClick={()=>{
+        axios.get('https://rabbokki.github.io/js/react_data_02.json')
+        .then((result)=>{
+          //요청 성공시 처리할 곳
+          console.log(result.data);
+          let temp = [...new Set([...product ,...result.data])];
+          // console.log(temp);
+          setProduct([...temp]);
+          if(product.length > 9){
+            alert('데이터가 없습니다.');
+          }
+        })
+        .catch(()=>{
+          //요청 실패 시 처리할 곳
+          console.log("실패함");
+        })
+      }}>데이터 가져오기</button>
     </Container>
     </div>
   );
